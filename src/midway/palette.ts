@@ -3,8 +3,8 @@ import { theme } from '../carnival';
 const { colors } = theme;
 
 /**
- * The midway map's daytime palette. Tent reds, creams and golds come from the
- * carnival theme; the sky, grass, paths and other scenery shades only the map
+ * The midway map's daytime palette, for a carnival of tortoises and lizards.
+ * Tent greens, creams and golds come from the carnival theme; the sky, grass, paths and other scenery shades only the map
  * uses live here.
  */
 export const palette = {
@@ -25,17 +25,17 @@ export const palette = {
   hedgeLight: '#86b236',
   shadow: 'rgba(60, 90, 10, 0.28)',
 
-  red: colors.stripeA,
-  redShade: '#b8283a',
+  leaf: colors.stripeA,
+  leafShade: '#3a752b',
   cream: colors.stripeB,
   creamShade: '#e3d9c2',
   gold: colors.accent,
-  goldShade: '#e0a91c',
-  blue: '#2b8ccc',
-  blueShade: '#1f6aa0',
+  goldShade: '#c08f2c',
+  teal: '#2f9e8f',
+  tealShade: '#237a6e',
   sky2: colors.water,
-  pink: '#f59ac0',
-  pinkShade: '#e076a4',
+  shell: '#a4743e',
+  shellShade: '#7f5730',
   wood: colors.wood,
   woodDark: '#6b4429',
   woodLight: '#b7834f',
@@ -48,10 +48,12 @@ export const palette = {
   closedShade: '#8a7daa',
   white: '#ffffff',
 
-  skins: ['#f1c27d', '#c68642', '#8d5524', '#e0ac69', '#ffdbac'],
-  hairs: ['#3b2219', '#1b1035', '#a55728', '#e6c35c', '#6b4429'],
-  shirts: [colors.water, '#7bd389', '#b48ee0', colors.danger, '#2b8ccc', colors.stripeB],
-  pants: ['#2d3a6b', '#3b2a4f', '#5a4a3a'],
-  bunting: [colors.stripeA, colors.accent, '#2b8ccc', colors.stripeB],
-  balloons: [colors.stripeA, colors.accent, '#2b8ccc', colors.water, '#f59ac0'],
+  // Visitors are lizards: scales in greens and sand, with a crest on top.
+  skins: ['#7bc043', '#5fa34a', '#a3c94a', '#4f8f5a', '#c2b26a'],
+  hairs: ['#e8b54a', '#e2553f', '#2f9e8f', '#a4743e', '#f4ecd0'],
+  // The player is a tortoise.
+  tortoiseSkin: '#9aa86a',
+  shirts: [colors.water, '#e8b54a', '#b48ee0', colors.danger, '#2f9e8f', colors.stripeB],
+  bunting: [colors.stripeA, colors.accent, '#2f9e8f', colors.stripeB],
+  balloons: [colors.stripeA, colors.accent, '#2f9e8f', colors.water, '#a4743e'],
 } as const;

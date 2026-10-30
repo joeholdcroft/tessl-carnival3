@@ -370,9 +370,9 @@ interface Stripes {
   bShade: string;
 }
 
-const RED: Stripes = {
-  a: palette.red,
-  aShade: palette.redShade,
+const LEAF: Stripes = {
+  a: palette.leaf,
+  aShade: palette.leafShade,
   b: palette.cream,
   bShade: palette.creamShade,
 };
@@ -382,13 +382,13 @@ const GOLD: Stripes = {
   b: palette.cream,
   bShade: palette.creamShade,
 };
-const BLUE: Stripes = {
-  a: palette.blue,
-  aShade: palette.blueShade,
+const TEAL: Stripes = {
+  a: palette.teal,
+  aShade: palette.tealShade,
   b: palette.cream,
   bShade: palette.creamShade,
 };
-const TENT_COLORS = [GOLD, BLUE, BLUE, RED] as const;
+const TENT_COLORS = [GOLD, TEAL, TEAL, LEAF] as const;
 
 function rimPoint(c: Pt, r: number, angle: number, z: number): Pt {
   return [c[0] + Math.cos(angle) * r * ISO_RX, c[1] + Math.sin(angle) * r * ISO_RY - z];
@@ -529,7 +529,7 @@ function roundTent(
 function bigTop(ctx: Ctx, prop: Prop, t: number) {
   const cx = prop.x + prop.w / 2;
   const cy = prop.y + prop.h / 2;
-  roundTent(ctx, cx, cy, 1.9, 38, 46, RED, t, palette.red);
+  roundTent(ctx, cx, cy, 1.9, 38, 46, LEAF, t, palette.leaf);
   const c = at(cx, cy);
   // A second ring of bunting, and gold lights round the wall.
   ringFlags(ctx, c, 1.5, 38 + 22, t, 12);
@@ -547,9 +547,9 @@ function carousel(ctx: Ctx, prop: Prop, t: number) {
   const turn = t * 0.5;
   const r = 1.75;
   oval(ctx, c[0] + 8, c[1] + 4, r * ISO_RX * 1.1, r * ISO_RY * 1.1, palette.shadow);
-  cylinder(ctx, c, r, 0, 6, RED, 24);
-  oval(ctx, c[0], c[1] - 6, r * ISO_RX, r * ISO_RY, palette.pink);
-  oval(ctx, c[0], c[1] - 6, r * ISO_RX * 0.82, r * ISO_RY * 0.82, palette.pinkShade);
+  cylinder(ctx, c, r, 0, 6, LEAF, 24);
+  oval(ctx, c[0], c[1] - 6, r * ISO_RX, r * ISO_RY, palette.shell);
+  oval(ctx, c[0], c[1] - 6, r * ISO_RX * 0.82, r * ISO_RY * 0.82, palette.shellShade);
 
   const roofZ = 46;
   const horses = Array.from({ length: 8 }, (_, i) => {
@@ -608,7 +608,7 @@ function carousel(ctx: Ctx, prop: Prop, t: number) {
         [x + 1, hy - 1],
         [x - 1, hy - 1],
       ],
-      palette.red,
+      palette.leaf,
     );
   };
   horses.filter((h) => Math.sin(h.angle) < 0).forEach(drawHorse);
@@ -631,12 +631,12 @@ function carousel(ctx: Ctx, prop: Prop, t: number) {
       [column[0] + 2, c[1] - roofZ],
       [column[0] - 2, c[1] - roofZ],
     ],
-    palette.red,
+    palette.leaf,
   );
   horses.filter((h) => Math.sin(h.angle) >= 0).forEach(drawHorse);
 
-  dome(ctx, c, r * 1.15, roofZ, 26, RED, turn);
-  scallopRing(ctx, c, r * 1.15, roofZ, 14, 4, [palette.red, palette.cream]);
+  dome(ctx, c, r * 1.15, roofZ, 26, LEAF, turn);
+  scallopRing(ctx, c, r * 1.15, roofZ, 14, 4, [palette.leaf, palette.cream]);
   ringFlags(ctx, c, r * 1.05, roofZ - 6, t, 16);
   knob(ctx, c[0], c[1] - roofZ - 26);
   flag(ctx, c[0], c[1] - roofZ - 28, t, palette.gold);
@@ -646,7 +646,7 @@ function carousel(ctx: Ctx, prop: Prop, t: number) {
 
 /** A tent with a ridged roof running along the x axis. */
 function peakedTent(ctx: Ctx, prop: Prop, t: number) {
-  const colors = prop.variant % 2 === 0 ? BLUE : RED;
+  const colors = prop.variant % 2 === 0 ? TEAL : LEAF;
   const x0 = prop.x + 0.2;
   const x1 = prop.x + prop.w - 0.2;
   const y0 = prop.y + 0.25;
@@ -730,7 +730,7 @@ function peakedTent(ctx: Ctx, prop: Prop, t: number) {
   const ridgeFront = at(x1 + 0.1, ym, wall + roof);
   const ridgeBack = at(x0 - 0.1, ym, wall + roof);
   flag(ctx, ridgeBack[0], ridgeBack[1], t, palette.gold);
-  flag(ctx, ridgeFront[0], ridgeFront[1], t + 1, palette.red);
+  flag(ctx, ridgeFront[0], ridgeFront[1], t + 1, palette.leaf);
 }
 
 function wheel(ctx: Ctx, x: number, y: number, r: number) {
@@ -742,8 +742,8 @@ function wheel(ctx: Ctx, x: number, y: number, r: number) {
 function wagon(ctx: Ctx, prop: Prop) {
   const body =
     prop.variant % 2 === 0
-      ? { top: palette.red, left: palette.red, right: palette.redShade }
-      : { top: palette.blue, left: palette.blue, right: palette.blueShade };
+      ? { top: palette.leaf, left: palette.leaf, right: palette.leafShade }
+      : { top: palette.teal, left: palette.teal, right: palette.tealShade };
   const x = prop.x + 0.1;
   const y = prop.y + 0.1;
   const w = prop.w - 0.2;
@@ -803,6 +803,17 @@ function person(
     ctx.ellipse(x, y, 8, 3.5, 0, 0, Math.PI * 2);
     ctx.stroke();
   }
+  // A lizard's tail, or a tortoise's tail tucked under its shell.
+  stroke(
+    ctx,
+    [
+      [x - dir * 2, y - 6],
+      [x - dir * 7, y - 2 + swing],
+      [x - dir * 10, y - 1],
+    ],
+    look.skin,
+    2,
+  );
   stroke(
     ctx,
     [
@@ -825,6 +836,14 @@ function person(
   ctx.beginPath();
   ctx.roundRect(x - 4, y - 16.5, 8, 9.5, 3);
   ctx.fill();
+  if (look.shell) {
+    // A tortoise's shell: a domed back with a ring of scutes.
+    ctx.fillStyle = look.shell;
+    ctx.beginPath();
+    ctx.ellipse(x - dir * (options.back ? 0 : 1.5), y - 12, 6, 6.5, 0, 0, Math.PI * 2);
+    ctx.fill();
+    oval(ctx, x - dir * (options.back ? 0 : 1.5), y - 12.5, 3, 3.2, palette.goldShade);
+  }
   stroke(
     ctx,
     [
@@ -843,15 +862,24 @@ function person(
     look.skin,
     2,
   );
+  // A reptile's head: a round skull with a snout, and a crest of spines in
+  // place of hair.
   oval(ctx, x, y - 20.5, 4, 4, look.skin);
-  ctx.fillStyle = look.hair;
-  ctx.beginPath();
-  if (options.back) ctx.arc(x, y - 20.8, 4.2, 0, Math.PI * 2);
-  else ctx.arc(x, y - 21, 4.2, Math.PI * 1.05, Math.PI * 1.95);
-  ctx.fill();
+  if (!options.back) oval(ctx, x + dir * 3, y - 19.6, 2.6, 2, look.skin);
+  for (const s of [-2.4, 0, 2.4]) {
+    poly(
+      ctx,
+      [
+        [x + s - 1.3, y - 23.8],
+        [x + s + 1.3, y - 23.8],
+        [x + s, y - 27],
+      ],
+      look.hair,
+    );
+  }
   if (!options.back) {
-    oval(ctx, x - 1.5 + dir, y - 20.3, 0.6, 0.7, palette.ink);
-    oval(ctx, x + 1.5 + dir, y - 20.3, 0.6, 0.7, palette.ink);
+    oval(ctx, x - 1.5 + dir, y - 21, 0.8, 0.9, palette.ink);
+    oval(ctx, x + 1.5 + dir, y - 21, 0.8, 0.9, palette.ink);
   }
   if (look.cap) {
     ctx.fillStyle = look.cap;
@@ -893,15 +921,15 @@ function cart(ctx: Ctx, prop: Prop, t: number) {
   const look = visitorLook(prop.x + prop.y);
   // The vendor stands behind the cart.
   const vendor = at(prop.x + 0.5, prop.y + 0.12);
-  person(ctx, vendor[0], vendor[1], { ...look, shirt: palette.cream, cap: palette.red });
+  person(ctx, vendor[0], vendor[1], { ...look, shirt: palette.cream, cap: palette.leaf });
   poly(ctx, rectPoints({ x: x + 0.15, y: y + 0.15, w, h: d }), palette.shadow);
 
   const body =
     kind === 0
-      ? { top: palette.cream, left: palette.red, right: palette.redShade }
+      ? { top: palette.cream, left: palette.leaf, right: palette.leafShade }
       : kind === 1
-        ? { top: palette.cream, left: palette.pink, right: palette.pinkShade }
-        : { top: palette.cream, left: palette.blue, right: palette.blueShade };
+        ? { top: palette.cream, left: palette.shell, right: palette.shellShade }
+        : { top: palette.cream, left: palette.teal, right: palette.tealShade };
   box(ctx, x, y, w, d, 5, 14, body.top, body.left, body.right);
   stripedWall(ctx, { x, y: y + d }, { x: x + w, y: y + d }, 9, 3, 6, [palette.cream, body.left]);
   const wheelAt = at(x + w * 0.3, y + d + 0.02, 5);
@@ -930,7 +958,7 @@ function cart(ctx: Ctx, prop: Prop, t: number) {
         2,
         palette.cream,
       );
-    box(ctx, x, y, w, d, 29, 2, palette.red, palette.red, palette.redShade);
+    box(ctx, x, y, w, d, 29, 2, palette.leaf, palette.leaf, palette.leafShade);
   } else if (kind === 1) {
     for (let i = 0; i < 3; i++) {
       const sx = top[0] - 7 + i * 7;
@@ -944,12 +972,12 @@ function cart(ctx: Ctx, prop: Prop, t: number) {
         palette.cream,
         1,
       );
-      oval(ctx, sx, top[1] - 13 + bob, 4.5, 4.5, palette.pink);
+      oval(ctx, sx, top[1] - 13 + bob, 4.5, 4.5, palette.shell);
       oval(ctx, sx - 1.5, top[1] - 14.5 + bob, 1.8, 1.8, palette.cream);
     }
   } else if (kind === 2) {
     stroke(ctx, [top, [top[0], top[1] - 22]], palette.metalShade, 1.2);
-    dome(ctx, [top[0], top[1] - 18], 0.75, 0, 9, BLUE, 0, 10);
+    dome(ctx, [top[0], top[1] - 18], 0.75, 0, 9, TEAL, 0, 10);
     for (let i = 0; i < 3; i++)
       oval(
         ctx,
@@ -957,7 +985,7 @@ function cart(ctx: Ctx, prop: Prop, t: number) {
         top[1] - 2,
         2.5,
         2.5,
-        [palette.pink, palette.cream, palette.woodLight][i],
+        [palette.shell, palette.cream, palette.woodLight][i],
       );
   } else {
     // A giant drink on the roof.
@@ -970,7 +998,7 @@ function cart(ctx: Ctx, prop: Prop, t: number) {
         [cx + 7, cy - 16],
         [cx - 7, cy - 16],
       ],
-      palette.red,
+      palette.leaf,
     );
     poly(
       ctx,
@@ -1009,7 +1037,7 @@ function ticketBooth(ctx: Ctx, prop: Prop) {
   const x = prop.x + 0.15;
   const y = prop.y + 0.15;
   poly(ctx, rectPoints({ x: x + 0.2, y: y + 0.2, w: 0.7, h: 0.7 }), palette.shadow);
-  box(ctx, x, y, 0.7, 0.7, 0, 26, palette.cream, palette.red, palette.redShade);
+  box(ctx, x, y, 0.7, 0.7, 0, 26, palette.cream, palette.leaf, palette.leafShade);
   poly(
     ctx,
     [
@@ -1026,12 +1054,16 @@ function ticketBooth(ctx: Ctx, prop: Prop) {
     poly(
       ctx,
       [at(xa, y + 0.7, 23), at(xb, y + 0.7, 23), at(xb, y + 0.95, 17), at(xa, y + 0.95, 17)],
-      i % 2 ? palette.cream : palette.blue,
+      i % 2 ? palette.cream : palette.teal,
     );
   }
-  box(ctx, x - 0.05, y - 0.05, 0.8, 0.8, 26, 3, palette.blue, palette.blueShade, palette.blueShade);
+  box(ctx, x - 0.05, y - 0.05, 0.8, 0.8, 26, 3, palette.teal, palette.tealShade, palette.tealShade);
   onPlane(ctx, at(x + 0.35, y + 0.35, 38), () =>
-    signBoard(ctx, 'TICKETS', 28, 9, { board: palette.gold, edge: palette.red, text: palette.red }),
+    signBoard(ctx, 'TICKETS', 28, 9, {
+      board: palette.gold,
+      edge: palette.leaf,
+      text: palette.leaf,
+    }),
   );
 }
 
@@ -1075,9 +1107,9 @@ function balloons(ctx: Ctx, prop: Prop, t: number) {
     0.16,
     0,
     4,
-    palette.blue,
-    palette.blueShade,
-    palette.blueShade,
+    palette.teal,
+    palette.tealShade,
+    palette.tealShade,
   );
   for (let i = 0; i < 3; i++) {
     const bob = Math.sin(t * 1.8 + i + prop.x) * 1.5;
@@ -1231,7 +1263,7 @@ function buntingPole(ctx: Ctx, prop: Prop) {
         [x + 1.3, y - z - 5],
         [x - 1.3, y - z - 3],
       ],
-      palette.red,
+      palette.leaf,
     );
   knob(ctx, x, y - POLE_HEIGHT - 1);
 }
@@ -1298,7 +1330,7 @@ function ferrisWheel(ctx: Ctx, prop: Prop, t: number) {
           palette.metalShade,
           1,
         );
-        ctx.fillStyle = palette.red;
+        ctx.fillStyle = palette.leaf;
         ctx.beginPath();
         ctx.roundRect(gx - 5, gy + 4, 10, 8, 2);
         ctx.fill();
@@ -1329,7 +1361,7 @@ function ferrisWheel(ctx: Ctx, prop: Prop, t: number) {
       stroke(ctx, [hubAt(side), onWheel(side, angle)], palette.cream, 1.4);
     }
     ring(side, radius * 0.6, palette.gold, 4);
-    ring(side, radius, side > 0 ? palette.blue : palette.blueShade, 4.5);
+    ring(side, radius, side > 0 ? palette.teal : palette.tealShade, 4.5);
   }
   stroke(ctx, [hubAt(-spread), hubAt(spread)], palette.woodDark, 4);
   const hub = hubAt(spread);
@@ -1345,26 +1377,26 @@ const BOOTH_SCHEMES = [
   {
     wall: palette.gold,
     wallShade: palette.goldShade,
-    awning: [palette.blue, palette.cream],
-    awningShade: [palette.blueShade, palette.creamShade],
+    awning: [palette.teal, palette.cream],
+    awningShade: [palette.tealShade, palette.creamShade],
   },
   {
     wall: palette.cream,
     wallShade: palette.creamShade,
-    awning: [palette.red, palette.cream],
-    awningShade: [palette.redShade, palette.creamShade],
+    awning: [palette.leaf, palette.cream],
+    awningShade: [palette.leafShade, palette.creamShade],
   },
   {
     wall: palette.sky2,
-    wallShade: palette.blue,
+    wallShade: palette.teal,
     awning: [palette.gold, palette.cream],
     awningShade: [palette.goldShade, palette.creamShade],
   },
   {
-    wall: palette.pink,
-    wallShade: palette.pinkShade,
-    awning: [palette.red, palette.gold],
-    awningShade: [palette.redShade, palette.goldShade],
+    wall: palette.shell,
+    wallShade: palette.shellShade,
+    awning: [palette.leaf, palette.gold],
+    awningShade: [palette.leafShade, palette.goldShade],
   },
 ] as const;
 const CLOSED_SCHEME = {
@@ -1379,7 +1411,7 @@ const BOOTH_WALL = 34;
 export const BOOTH_SIGN_HEIGHT = BOOTH_WALL + 22;
 
 function target(ctx: Ctx, r: number) {
-  const rings = [palette.red, palette.cream, palette.red, palette.cream];
+  const rings = [palette.leaf, palette.cream, palette.leaf, palette.cream];
   rings.forEach((color, i) => {
     ctx.fillStyle = color;
     ctx.beginPath();
@@ -1528,7 +1560,7 @@ function booth(ctx: Ctx, slot: BoothSlot, name: string, t: number, glow: boolean
       60,
       16,
       open
-        ? { board: palette.cream, edge: palette.red, text: palette.red }
+        ? { board: palette.cream, edge: palette.leaf, text: palette.leaf }
         : { board: palette.metal, edge: palette.closedShade, text: palette.closedShade },
       glow,
     );
@@ -1588,7 +1620,7 @@ export function propBounds(prop: Prop): Box {
   };
 }
 
-// ── People ────────────────────────────────────────────────────────────────
+// ── People: lizard visitors and a tortoise player ─────────────────────────
 
 export interface Look {
   skin: string;
@@ -1596,6 +1628,8 @@ export interface Look {
   shirt: string;
   pants: string;
   cap?: string;
+  /** Tortoises wear their shell. */
+  shell?: string;
 }
 
 export function visitorLook(n: number): Look {
@@ -1603,16 +1637,19 @@ export function visitorLook(n: number): Look {
     skin: palette.skins[n % palette.skins.length],
     hair: palette.hairs[(n * 3 + 1) % palette.hairs.length],
     shirt: palette.shirts[(n * 2 + 1) % palette.shirts.length],
-    pants: palette.pants[n % palette.pants.length],
+    // Bare lizard legs, the same colour as the scales.
+    pants: palette.skins[n % palette.skins.length],
   };
 }
 
+/** The player is a tortoise in a gold cap. */
 export const PLAYER_LOOK: Look = {
-  skin: palette.skins[0],
-  hair: palette.hairs[2],
-  shirt: palette.red,
-  pants: palette.pants[0],
+  skin: palette.tortoiseSkin,
+  hair: palette.tortoiseSkin,
+  shirt: palette.leaf,
+  pants: palette.tortoiseSkin,
   cap: palette.gold,
+  shell: palette.shell,
 };
 
 export function drawWalker(ctx: Ctx, walker: Walker, look: Look, player = false, t = 0) {
@@ -1663,7 +1700,7 @@ export function drawArch(ctx: Ctx, map: MidwayMap, t: number) {
     ctx.beginPath();
     ctx.ellipse(0, -10, 18, 14, 0, Math.PI, Math.PI * 2);
     ctx.fill();
-    ctx.fillStyle = palette.red;
+    ctx.fillStyle = palette.leaf;
     ctx.beginPath();
     ctx.ellipse(0, -10, 12, 9, 0, Math.PI, Math.PI * 2);
     ctx.fill();
@@ -1681,7 +1718,7 @@ export function drawArch(ctx: Ctx, map: MidwayMap, t: number) {
   });
   for (const px of [left, right]) {
     const top = at(px + 0.13, y - 0.02, ARCH_HEIGHT);
-    flag(ctx, top[0], top[1], t + px, palette.red);
+    flag(ctx, top[0], top[1], t + px, palette.leaf);
   }
 }
 
@@ -1749,7 +1786,7 @@ export function drawProp(ctx: Ctx, prop: Prop, t: number) {
         34,
         colors,
         t,
-        prop.variant % 2 ? palette.blue : palette.gold,
+        prop.variant % 2 ? palette.teal : palette.gold,
       );
     }
     case 'peaked-tent':

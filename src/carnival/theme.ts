@@ -1,19 +1,20 @@
 /**
- * The carnival's colours, fonts and sizes. Games draw with these rather than
+ * The carnival's colours, fonts and sizes, themed on tortoises and lizards. Games draw with these rather than
  * their own values, so every booth on the midway looks like it belongs.
  */
 export const theme = {
   colors: {
-    background: '#1b1035',
-    surface: '#2a1a52',
-    text: '#fff8e7',
-    muted: '#b9a9d9',
-    accent: '#ffcc33',
-    danger: '#ff5a5f',
-    stripeA: '#e63946',
-    stripeB: '#fff8e7',
-    water: '#5ec8f2',
-    wood: '#8a5a3b',
+    // Swamp greens, a tortoise shell's gold and brown, and lizard green stripes.
+    background: '#14261a',
+    surface: '#1f3a26',
+    text: '#fbf6e4',
+    muted: '#a9c4a0',
+    accent: '#e8b54a',
+    danger: '#e2553f',
+    stripeA: '#4f9a3a',
+    stripeB: '#f4ecd0',
+    water: '#5ec8c2',
+    wood: '#7a5a3a',
   },
   font: {
     family: '"Trebuchet MS", "Segoe UI", system-ui, sans-serif',
